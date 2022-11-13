@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using TacticsogrePspExtracts;
 using Entry = System.Collections.Generic.Dictionary<string, object>;
 
@@ -143,6 +144,7 @@ string formatGlobalFlag(ushort flagId)
 
         0x0839 => $"_all_apocrypha_temple_cleared",
         0x0846 => $"_deneb_wicce_unlocked",
+        0x0845 => $"_{110:ch}_defeated",
 
         _ => $"",
     });
@@ -621,6 +623,17 @@ for (var chapterIndex = 0u; chapterIndex < chapterNames.Length; chapterIndex++)
             //}
         }
     }
+}
+
+{
+    var strongpoints = new HashSet<string>();
+    var pgrsString = serializer.Serialize(pgrs).Replace("CurrentStrongpoint == 99:", "");
+    var matches = new Regex(@"trongpoint.*?(\d+):").Matches(pgrsString);
+    foreach (Match match in matches)
+    {
+        strongpoints.Add(match.Groups[1].Value);
+    }
+    File.WriteAllText(@"..\..\data\strongpoints.yaml", serializer.Serialize(strongpoints));
 }
 
 

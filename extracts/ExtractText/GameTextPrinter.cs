@@ -91,7 +91,6 @@
 
         string GetText(string type, object? arg, Dictionary<ushort, ushort>? idMap = null)
         {
-
             var id = Convert.ToUInt16(arg);
             return idMap?.TryGetValue(id, out var nameId) == true
                 ? $"{id}->{nameId}:{texts[type][nameId][0][langIndex]}"
